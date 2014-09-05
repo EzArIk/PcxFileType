@@ -90,7 +90,7 @@ License
 -------
 
 This work is distributed under the terms and conditions of the MIT 
-license. See License.txt for more information.
+license. See License.md for more information.
 
 
 Feedback & Bug Reporting
