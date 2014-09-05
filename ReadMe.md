@@ -96,5 +96,7 @@ license. See License.md for more information.
 Feedback & Bug Reporting
 ------------------------
 
-Please send feedback to: inexorabletash@gmail.com
+Bug reports can be filed at:
+
+https://github.com/inexorabletash/PcxFileType/issues
 
