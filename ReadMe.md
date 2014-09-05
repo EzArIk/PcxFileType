@@ -12,8 +12,9 @@ History
 Summary
 -------
 
-This is a file type plugin for Paint.NET, which supports
-the ZSoft Corporation PC Paintbrush "PCX" image format.
+This is a file type plugin for [Paint.NET](http://www.getpaint.net/), 
+which adds support for the ZSoft Corporation PC Paintbrush "PCX" image
+format.
 
 Supported are:
 
