@@ -11,7 +11,6 @@ History
 
 Summary
 -------
-
 This is a file type plugin for [Paint.NET](http://www.getpaint.net/), 
 which adds support for the ZSoft Corporation PC Paintbrush "PCX" image
 format.
@@ -21,19 +20,19 @@ Supported are:
 * Loading 1-, 2-, 4-, 8- and 24-bit color PCX files 
 * Saving 4- and 8-bit PCX files 
 
+Paint.NET Forum Topic:
 
-References
-----------
+* http://forums.getpaint.net/index.php?/topic/2135-pcx-plug-in/
 
+PCX File Format References
+--------------------------
 * http://en.wikipedia.org/wiki/PCX
 * http://www.qzx.com/pc-gpe/pcx.txt
 * http://www.fileformat.info/format/pcx/
 * http://courses.ece.uiuc.edu/ece390/books/labmanual/graphics-pcx.html
 
-
 Loading
 -------
-
 The following image formats can be loaded:
 
 * PCX Versions 2.5, 2.8 and 3.0 
@@ -44,10 +43,8 @@ The following image formats can be loaded:
 * 16-color and 256-color custom palettes
 * multiple bit planes (common for 4-bit and required for 24-bit)
 
-
 Saving
 ------
-
 Saving as PCX always attempts to create an 8-bit (256-color) 
 palettized image, although if the palette ends up being 16 colors 
 or less a 4-bit palette is used instead. Saving as 24-bit PCX is
@@ -73,7 +70,6 @@ If selected, the original palette will be used when saving.
 
 Installation
 ------------
-
 Place the PcxFileType.DLL file in the the 'FileTypes' folder in your 
 Paint.NET installation location. For example, in:
 
@@ -89,14 +85,12 @@ select Paint.NET (you may have to click "Browse...") and then check
 
 License
 -------
-
 This work is distributed under the terms and conditions of the MIT 
 license. See License.md for more information.
 
 
 Feedback & Bug Reporting
 ------------------------
-
 Bug reports can be filed at:
 
 https://github.com/inexorabletash/PcxFileType/issues
