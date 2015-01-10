@@ -1,6 +1,6 @@
 
 Paint.NET PCX Plugin
-Copyright (C) 2006-2014 Joshua Bell (inexorabletash@gmail.com)
+Copyright (C) 2006-2015 Joshua Bell (inexorabletash@gmail.com)
 
 Portions Copyright (c) 2006 Rick Brewster, Chris Crosetto, Dennis Dietrich, 
 Tom Jackson, Michael Kelsey, Brandon Ortiz, Craig Taylor, Chris Trevino, 

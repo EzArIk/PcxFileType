@@ -7,7 +7,8 @@ History
 * 2006-12-24 - 0.9.1.0 - Added "Use original palette" option
 * 2007-01-25 - 0.9.2.0 - Fixed RLE compression writing
 * 2007-10-21 - 0.9.3.0 - Force 1-bit images to black/white palette
-* 2014-06-24 - 0.9.4.0 - Compatability with Paint.NET 4.0
+* 2014-06-24 - 0.9.4.0 - Compatibility with Paint.NET 4.0
+* 2015-01-09 - 0.9.5.0 - Build for .NET Framework 4.5
 
 Summary
 -------
