@@ -136,6 +136,13 @@ namespace PcxFileTypePlugin.Quantize
                 palette.Entries[index] = _colors[index];
             }
 
+#if ORIGINAL_CODE
+#else // PCX Plugin
+            // For PCX: Pad with transparency
+            for (int i = _colors.Length; i < palette.Entries.Length; ++i)
+                palette.Entries[i] = Color.Transparent;
+#endif
+
             return palette;
         }
     }

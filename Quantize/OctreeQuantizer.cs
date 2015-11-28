@@ -116,7 +116,7 @@ namespace PcxFileTypePlugin.Quantize
 
             // Add the transparent color
             original.Entries[_maxColors] = Color.FromArgb(0, 0, 0, 0);
-#else
+#else // PCX Plugin
             // For PCX: Pad with transparency
             for (int i = palette.Count; i < original.Entries.Length; ++i)
                 original.Entries[i] = Color.Transparent;
