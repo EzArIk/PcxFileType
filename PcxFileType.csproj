@@ -102,7 +102,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) "C:\Program Files\Paint.NET\FileTypes\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -213,43 +213,30 @@ namespace PcxFileTypePlugin
                 hDpi = ReadUInt16(input);
                 vDpi = ReadUInt16(input);
                 for (int i = 0; i < colorMap.Length; i++)
-                {
                     colorMap[i] = ReadByte(input);
-                }
                 reserved = ReadByte(input);
                 nPlanes = ReadByte(input);
                 bytesPerLine = ReadUInt16(input);
                 paletteInfo = (PcxPaletteType)ReadUInt16(input);
                 for (int i = 0; i < filler.Length; i++)
-                {
                     filler[i] = ReadByte(input);
-                }
             }
 
             private byte ReadByte(Stream input)
             {
                 int byteRead = input.ReadByte();
                 if (byteRead == -1)
-                {
                     throw new EndOfStreamException();
-                }
-                else
-                {
-                    return (byte)byteRead;
-                }
+
+                return (byte)byteRead;
             }
 
             private ushort ReadUInt16(Stream input)
             {
                 int shortRead = StreamExtensions.ReadUInt16(input);
                 if (shortRead == -1)
-                {
                     throw new EndOfStreamException();
-                }
-                else
-                {
-                    return (ushort)shortRead;
-                }
+                return (ushort)shortRead;
             }
         }
 
@@ -284,9 +271,7 @@ namespace PcxFileTypePlugin
             public PcxPalette(uint size)
             {
                 if (size != 16 && size != 256)
-                {
                     throw new FormatException("Unsupported palette size");
-                }
 
                 m_palette = new ColorBgra[size];
             }
@@ -297,38 +282,26 @@ namespace PcxFileTypePlugin
 
                 uint size;
                 if (entries.Length <= 16)
-                {
                     size = 16;
-                }
                 else if (entries.Length <= 256)
-                {
                     size = 256;
-                }
                 else
-                {
                     throw new FormatException("Unsupported palette size");
-                }
 
                 m_palette = new ColorBgra[size];
 
                 for (uint i = 0; i < entries.Length; i++)
-                {
                     m_palette[i] = ColorBgra.FromColor(entries[i]);
-                }
 
                 // Fill rest of the palette with black
                 for (uint i = size - 1; i >= entries.Length; i--)
-                {
                     m_palette[i] = ColorBgra.Black;
-                }
             }
 
             public PcxPalette(Stream input, int size)
             {
                 if (size != 16 && size != 256)
-                {
                     throw new FormatException("Unsupported palette size");
-                }
 
                 m_palette = new ColorBgra[size];
 
@@ -336,21 +309,15 @@ namespace PcxFileTypePlugin
                 {
                     int red = input.ReadByte();
                     if (red == -1)
-                    {
                         throw new EndOfStreamException();
-                    }
 
                     int green = input.ReadByte();
                     if (green == -1)
-                    {
                         throw new EndOfStreamException();
-                    }
 
                     int blue = input.ReadByte();
                     if (blue == -1)
-                    {
                         throw new EndOfStreamException();
-                    }
 
                     m_palette[i] = ColorBgra.FromBgra((byte)blue, (byte)green, (byte)red, 255);
                 }
@@ -370,9 +337,7 @@ namespace PcxFileTypePlugin
             public byte[] ToColorMap()
             {
                 if (m_palette.Length != 16)
-                {
                     throw new FormatException("Trying to write an unsupported palette size to a header ColorMap");
-                }
 
                 byte[] colorMap = new byte[48];
                 uint index = 0;
@@ -391,13 +356,9 @@ namespace PcxFileTypePlugin
             public static PcxPalette FromColorMap(byte[] colorMap)
             {
                 if (colorMap == null)
-                {
                     throw new ArgumentNullException("colorMap");
-                }
                 if (colorMap.Length != 48)
-                {
                     throw new FormatException("Trying to read an unsupported palette size from a header ColorMap");
-                }
 
                 PcxPalette palette = new PcxPalette(16);
 
@@ -417,13 +378,9 @@ namespace PcxFileTypePlugin
             public static PcxPalette FromEgaPalette(uint[] egaPalette)
             {
                 if (egaPalette == null)
-                {
                     throw new ArgumentNullException("egaPalette");
-                }
                 if (egaPalette.Length != 16)
-                {
                     throw new FormatException("Trying to read an unsupported palette size from a header ColorMap");
-                }
 
                 PcxPalette palette = new PcxPalette(16);
 
@@ -483,32 +440,24 @@ namespace PcxFileTypePlugin
             PcxHeader header = new PcxHeader(input);
 
             if (header.id != PcxId.ZSoftPCX)
-            {
                 throw new FormatException("Not a PCX file.");
-            }
 
             if (header.version != PcxVersion.Version3_0 &&
                 header.version != PcxVersion.Version2_8_Palette &&
                 header.version != PcxVersion.Version2_8_DefaultPalette &&
                 header.version != PcxVersion.Version2_5)
-            {
                 throw new FormatException(String.Format("Unsupported PCX version: {0}", header.version));
-            }
 
             if (header.bitsPerPixel != 1 &&
                 header.bitsPerPixel != 2 &&
                 header.bitsPerPixel != 4 &&
                 header.bitsPerPixel != 8)
-            {
                 throw new FormatException(String.Format("Unsupported PCX bits per pixel: {0} bits per pixel", header.bitsPerPixel));
-            }
 
             int width = header.xMax - header.xMin + 1;
             int height = header.yMax - header.yMin + 1;
             if (width < 0 || height < 0 || width > 0xffff || height > 0xffff)
-            {
                 throw new FormatException(String.Format("Invalid image dimensions: ({0},{1})-({2},{3})", header.xMin, header.yMin, header.xMax, header.yMax));
-            }
 
             // Pixels per line, including PCX's even-number-of-pixels buffer
             int pixelsPerLine = header.bytesPerLine * 8 /*bitsPerByte*/ / header.bitsPerPixel;
@@ -521,10 +470,7 @@ namespace PcxFileTypePlugin
                 bitsPerPixel != 4 &&
                 bitsPerPixel != 8 &&
                 bitsPerPixel != 24)
-            {
                 throw new FormatException(String.Format("Unsupported PCX bit depth: {0}", bitsPerPixel));
-            }
-
 
             //
             // Load the palette
@@ -585,9 +531,7 @@ namespace PcxFileTypePlugin
                 input.Seek(-(1 + (256 * 3)), SeekOrigin.End);
 
                 if (input.ReadByte() != PcxPaletteMarker)
-                {
                     throw new FormatException("PCX palette marker not present in file");
-                }
 
                 palette = new PcxPalette(input, 256);
 
@@ -638,9 +582,7 @@ namespace PcxFileTypePlugin
 
                             // Account for padding bytes
                             if (x < width)
-                            {
                                 indexBuffer[x] = indexBuffer[x] | (index << (plane * header.bitsPerPixel));
-                            }
                         }
                     }
 
@@ -769,9 +711,8 @@ namespace PcxFileTypePlugin
 
             // Determine palette size
             if (bitmap.Palette.Entries.Length == 0 || bitmap.Palette.Entries.Length > 256)
-            {
                 throw new FormatException("Unsupported palette size");
-            }
+
             PcxPalette palette = new PcxPalette(bitmap.Palette);
 
             //
@@ -794,9 +735,7 @@ namespace PcxFileTypePlugin
             header.paletteInfo = PcxPaletteType.Indexed;
 
             if (palette.Size == 16)
-            {
                 header.colorMap = palette.ToColorMap();
-            }
 
             header.Write(output);
 
@@ -845,9 +784,7 @@ namespace PcxFileTypePlugin
                     byteWriter.Flush(); // Force RLE encoding reset
 
                     if (progressCallback != null)
-                    {
                         progressCallback(this, new ProgressEventArgs(100.0 * ((double)(bitmap.Height - y) / (double)bitmap.Height)));
-                    }
                 }
             }
             finally
@@ -884,20 +821,11 @@ namespace PcxFileTypePlugin
             public PcxIndexReader(PcxByteReader reader, uint bitsPerPixel)
             {
                 if (!(bitsPerPixel == 1 || bitsPerPixel == 2 || bitsPerPixel == 4 || bitsPerPixel == 8))
-                {
                     throw new ArgumentException("bitsPerPixel must be 1, 2, 4 or 8", "bitsPerPixel");
-                }
 
                 m_reader = reader;
                 m_bitsPerPixel = bitsPerPixel;
-
-                // Compute bit mask
-                m_bitMask = 1;
-                for (uint i = m_bitsPerPixel; i > 0; i--)
-                {
-                    m_bitMask = m_bitMask << 1;
-                }
-                m_bitMask--;
+                m_bitMask = (uint)((1 << (int)m_bitsPerPixel) - 1);
             }
 
             public uint ReadIndex()
@@ -932,20 +860,11 @@ namespace PcxFileTypePlugin
             public PcxIndexWriter(PcxByteWriter writer, uint bitsPerPixel)
             {
                 if (!(bitsPerPixel == 1 || bitsPerPixel == 2 || bitsPerPixel == 4 || bitsPerPixel == 8))
-                {
                     throw new ArgumentException("bitsPerPixel must be 1, 2, 4 or 8", "bitsPerPixel");
-                }
 
                 m_writer = writer;
                 m_bitsPerPixel = bitsPerPixel;
-
-                // Compute bit mask
-                m_bitMask = 1;
-                for (uint i = m_bitsPerPixel; i > 0; i--)
-                {
-                    m_bitMask = m_bitMask << 1;
-                }
-                m_bitMask--;
+                m_bitMask = (uint)((1 << (int)m_bitsPerPixel) - 1);
             }
 
             public void WriteIndex(uint index)
@@ -958,9 +877,7 @@ namespace PcxFileTypePlugin
                 m_bitsUsed += m_bitsPerPixel;
 
                 if (m_bitsUsed == 8)
-                {
                     Flush();
-                }
             }
 
             public void Flush()
@@ -1056,10 +973,9 @@ namespace PcxFileTypePlugin
             public override void Flush()
             {
                 if (m_count == 0)
-                {
                     return;
-                }
-                else if ((m_count > 1) || ((m_count == 1) && ((m_lastValue & PcxRleMask) == PcxRleMask)))
+
+                if ((m_count > 1) || ((m_count == 1) && ((m_lastValue & PcxRleMask) == PcxRleMask)))
                 {
                     m_stream.WriteByte((byte)(PcxRleMask | m_count));
                     m_stream.WriteByte(m_lastValue);
@@ -1093,23 +1009,19 @@ namespace PcxFileTypePlugin
                     m_count--;
                     return m_rleValue;
                 }
-                else
+
+                byte code = (byte)m_stream.ReadByte();
+
+                if ((code & PcxRleMask) == PcxRleMask)
                 {
-                    byte code = (byte)m_stream.ReadByte();
+                    m_count = (uint)(code & (PcxRleMask ^ 0xff));
+                    m_rleValue = (byte)m_stream.ReadByte();
 
-                    if ((code & PcxRleMask) == PcxRleMask)
-                    {
-                        m_count = (uint)(code & (PcxRleMask ^ 0xff));
-                        m_rleValue = (byte)m_stream.ReadByte();
-
-                        m_count--;
-                        return m_rleValue;
-                    }
-                    else
-                    {
-                        return code;
-                    }
+                    m_count--;
+                    return m_rleValue;
                 }
+
+                return code;
             }
         }
 

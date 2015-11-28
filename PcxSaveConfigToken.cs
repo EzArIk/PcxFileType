@@ -59,9 +59,7 @@ namespace PcxFileTypePlugin
             set
             {
                 if (value < minThreshold || value > maxThreshold)
-                {
                     throw new ArgumentOutOfRangeException("threshold must be " + minThreshold + " to " + maxThreshold + ", inclusive");
-                }
 
                 this.threshold = value;
             }
@@ -100,9 +98,7 @@ namespace PcxFileTypePlugin
             set
             {
                 if (value < minDitherLevel || value > maxDitherLevel)
-                {
                     throw new ArgumentOutOfRangeException("ditherLevel must be " + minDitherLevel + " to " + maxDitherLevel + ", inclusive");
-                }
 
                 this.ditherLevel = value;
             }
@@ -120,18 +116,13 @@ namespace PcxFileTypePlugin
             }
         }
 
-
         public override void Validate()
         {
             if (this.threshold < minThreshold || this.threshold > maxThreshold)
-            {
                 throw new ArgumentOutOfRangeException(String.Format("threshold must be {0} to {1}, inclusive", minThreshold, maxThreshold));
-            }
 
             if (this.ditherLevel < minDitherLevel || this.ditherLevel > maxDitherLevel)
-            {
                 throw new ArgumentOutOfRangeException(String.Format("ditherLevel must be {0} to {1}, inclusive", minDitherLevel, maxDitherLevel));
-            }
         }
     }
 }
