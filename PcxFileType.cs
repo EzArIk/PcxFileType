@@ -174,7 +174,7 @@ namespace PcxFileTypePlugin
                 output.WriteByte((byte)id);
                 output.WriteByte((byte)version);
                 output.WriteByte((byte)encoding);
-                output.WriteByte((byte)bitsPerPixel);
+                output.WriteByte(bitsPerPixel);
                 StreamExtensions.WriteUInt16(output, xMin);
                 StreamExtensions.WriteUInt16(output, yMin);
                 StreamExtensions.WriteUInt16(output, xMax);
@@ -270,7 +270,7 @@ namespace PcxFileTypePlugin
 
             public PcxPalette(uint size)
             {
-                if (size != 16 && size != 256)
+                if (size != 2 && size != 16 && size != 256)
                     throw new FormatException("Unsupported palette size");
 
                 m_palette = new ColorBgra[size];
@@ -287,7 +287,9 @@ namespace PcxFileTypePlugin
                     length = padding;
 
                 uint size;
-                if (length <= 16)
+                if (length <= 2)
+                    size = 2;
+                else if (length <= 16)
                     size = 16;
                 else if (length <= 256)
                     size = 256;
@@ -342,12 +344,12 @@ namespace PcxFileTypePlugin
 
             public byte[] ToColorMap()
             {
-                if (m_palette.Length != 16)
+                if (m_palette.Length > 16)
                     throw new FormatException("Trying to write an unsupported palette size to a header ColorMap");
 
                 byte[] colorMap = new byte[48];
                 uint index = 0;
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < m_palette.Length; ++i)
                 {
                     ColorBgra c = m_palette[i];
 
@@ -355,6 +357,9 @@ namespace PcxFileTypePlugin
                     colorMap[index++] = c.G;
                     colorMap[index++] = c.B;
                 }
+
+                while (index < colorMap.Length)
+                    colorMap[index++] = 0;
 
                 return colorMap;
             }
@@ -573,8 +578,8 @@ namespace PcxFileTypePlugin
 
                     // Decode the RLE byte stream
                     PcxByteReader byteReader = (header.encoding == PcxEncoding.RunLengthEncoded)
-                        ? (PcxByteReader)(new PcxRleByteReader(input))
-                        : (PcxByteReader)(new PcxRawByteReader(input));
+                        ? new PcxRleByteReader(input)
+                        : (PcxByteReader)new PcxRawByteReader(input);
 
                     // Read indices of a given length out of the byte stream
                     PcxIndexReader indexReader = new PcxIndexReader(byteReader, header.bitsPerPixel);
@@ -622,6 +627,7 @@ namespace PcxFileTypePlugin
                 Document document = new Document(surface.Width, surface.Height);
                 document.Layers.Add(layer);
                 document.Metadata.SetUserValue("Palette", palette.Serialize());
+                document.Metadata.SetUserValue("BitDepth", bitsPerPixel.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
                 return document;
             }
@@ -689,9 +695,14 @@ namespace PcxFileTypePlugin
                 Quantizer quantizer;
 
                 string serializedPalette = input.Metadata.GetUserValue("Palette");
+                int bitsPerPixel = 0;
+                Int32.TryParse(input.Metadata.GetUserValue("BitDepth"), out bitsPerPixel);
+
                 if (pcxToken.UseOriginalPalette && serializedPalette != null)
                 {
                     List<Color> palette = PcxPalette.Deserialize(serializedPalette);
+                    if (bitsPerPixel > 0)
+                        palette = palette.GetRange(0, 1 << bitsPerPixel);
                     quantizer = new PaletteQuantizer(palette);
                 }
                 else
@@ -728,6 +739,7 @@ namespace PcxFileTypePlugin
             header.version = PcxVersion.Version3_0;
             header.encoding = token.RleCompress ? PcxEncoding.RunLengthEncoded : PcxEncoding.None;
             header.bitsPerPixel =
+                palette.Size == 2 ? (byte)1 :
                 palette.Size == 16 ? (byte)4 :
                 palette.Size == 256 ? (byte)8 : (byte)0;
             header.xMin = 0;
@@ -741,7 +753,7 @@ namespace PcxFileTypePlugin
             if (header.bytesPerLine % 2 == 1) ++header.bytesPerLine; // Must be even
             header.paletteInfo = PcxPaletteType.Indexed;
 
-            if (palette.Size == 16)
+            if (palette.Size <= 16)
                 header.colorMap = palette.ToColorMap();
 
             header.Write(output);
@@ -765,12 +777,12 @@ namespace PcxFileTypePlugin
                     unsafe
                     {
                         byte* pData = (byte*)bitmapData.Scan0.ToPointer() + (y * bitmapData.Stride);
-                        System.Runtime.InteropServices.Marshal.Copy(new IntPtr(pData), row, 0, bitmap.Width);
+                        Marshal.Copy(new IntPtr(pData), row, 0, bitmap.Width);
                     }
 
                     PcxByteWriter byteWriter = (header.encoding == PcxEncoding.RunLengthEncoded)
-                        ? (PcxByteWriter)(new PcxRleByteWriter(output))
-                        : (PcxByteWriter)(new PcxRawByteWriter(output));
+                        ? new PcxRleByteWriter(output)
+                        : (PcxByteWriter)new PcxRawByteWriter(output);
 
                     PcxIndexWriter indexWriter = new PcxIndexWriter(byteWriter, header.bitsPerPixel);
 
@@ -791,7 +803,7 @@ namespace PcxFileTypePlugin
                     byteWriter.Flush(); // Force RLE encoding reset
 
                     if (progressCallback != null)
-                        progressCallback(this, new ProgressEventArgs(100.0 * ((double)(bitmap.Height - y) / (double)bitmap.Height)));
+                        progressCallback(this, new ProgressEventArgs(100.0 * ((bitmap.Height - y) / (double)bitmap.Height)));
                 }
             }
             finally
@@ -833,7 +845,7 @@ namespace PcxFileTypePlugin
                 m_reader = reader;
                 m_bitsPerPixel = bitsPerPixel;
                 m_bitMask = (uint)((1 << (int)m_bitsPerPixel) - 1);
-            }
+            }       
 
             public uint ReadIndex()
             {
