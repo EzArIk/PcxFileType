@@ -108,6 +108,7 @@ namespace PcxFileTypePlugin.Quantize
                 original.Entries[index] = palette[index];
             }
 
+#if ORIGINAL_CODE
             for (int i = palette.Count; i < original.Entries.Length; ++i)
             {
                 original.Entries[i] = Color.FromArgb(255, 0, 0, 0);
@@ -115,7 +116,11 @@ namespace PcxFileTypePlugin.Quantize
 
             // Add the transparent color
             original.Entries[_maxColors] = Color.FromArgb(0, 0, 0, 0);
-
+#else
+            // For PCX: Pad with transparency
+            for (int i = palette.Count; i < original.Entries.Length; ++i)
+                original.Entries[i] = Color.Transparent;
+#endif
             return original;
         }
 

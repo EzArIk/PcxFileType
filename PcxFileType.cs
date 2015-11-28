@@ -279,22 +279,28 @@ namespace PcxFileTypePlugin
             public PcxPalette(ColorPalette palette)
             {
                 Color[] entries = palette.Entries;
+                int length = entries.Length;
+
+                // Ignore transparent padding entries from OctreeQuantizer
+                int padding = Array.FindIndex(entries, c => c.ToArgb() == Color.Transparent.ToArgb());
+                if (padding != -1)
+                    length = padding;
 
                 uint size;
-                if (entries.Length <= 16)
+                if (length <= 16)
                     size = 16;
-                else if (entries.Length <= 256)
+                else if (length <= 256)
                     size = 256;
                 else
                     throw new FormatException("Unsupported palette size");
 
                 m_palette = new ColorBgra[size];
 
-                for (uint i = 0; i < entries.Length; i++)
+                for (uint i = 0; i < length; i++)
                     m_palette[i] = ColorBgra.FromColor(entries[i]);
 
                 // Fill rest of the palette with black
-                for (uint i = size - 1; i >= entries.Length; i--)
+                for (uint i = size - 1; i >= length; i--)
                     m_palette[i] = ColorBgra.Black;
             }
 
@@ -731,7 +737,8 @@ namespace PcxFileTypePlugin
             header.hDpi = (ushort)bitmap.HorizontalResolution;
             header.vDpi = (ushort)bitmap.VerticalResolution;
             header.nPlanes = 1;
-            header.bytesPerLine = (ushort)(bitmap.Width + ((bitmap.Width % 2 == 1) ? 1 : 0)); // Bytes per scan line - must be even
+            header.bytesPerLine = (ushort)(bitmap.Width * header.bitsPerPixel / 8 /*bitsPerByte*/);
+            if (header.bytesPerLine % 2 == 1) ++header.bytesPerLine; // Must be even
             header.paletteInfo = PcxPaletteType.Indexed;
 
             if (palette.Size == 16)
