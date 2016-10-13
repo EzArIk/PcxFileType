@@ -9,7 +9,8 @@ History
 * 2007-10-21 - 0.9.3.0 - Force 1-bit images to black/white palette
 * 2014-06-24 - 0.9.4.0 - Compatibility with Paint.NET 4.0
 * 2015-01-09 - 0.9.5.0 - Build for .NET Framework 4.5
-* 2016-10-13 - 0.9.5.1 - [EzArIk]: Added (somewhat crude but effective) pre-set palette support, included example pre-set file.
+* 2016-10-13 - 0.9.5.1 - [EzArIk]: Added (somewhat crude but effective) pre-set palette support, 
+  included example pre-set file, (also made the project reference Paint.net Api automatically.)
 
 Summary
 -------
