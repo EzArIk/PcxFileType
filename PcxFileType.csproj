@@ -43,27 +43,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PaintDotNet.Base">
-      <HintPath>..\..\..\Program Files\Paint.NET\PaintDotNet.Base.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\paint.net\PaintDotNet.Base.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PaintDotNet.Core">
-      <HintPath>..\..\..\Program Files\Paint.NET\PaintDotNet.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\paint.net\PaintDotNet.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PaintDotNet.Data">
-      <HintPath>..\..\..\Program Files\Paint.NET\PaintDotNet.Data.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\paint.net\PaintDotNet.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PaintDotNet.Effects">
-      <HintPath>..\..\..\Program Files\Paint.NET\PaintDotNet.Effects.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\paint.net\PaintDotNet.Effects.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PaintDotNet.Framework">
-      <HintPath>..\..\..\Program Files\Paint.NET\PaintDotNet.Framework.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\paint.net\PaintDotNet.Framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PaintDotNet.Resources">
-      <HintPath>..\..\..\Program Files\Paint.NET\PaintDotNet.Resources.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files\paint.net\PaintDotNet.Resources.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -92,20 +92,6 @@
   <ItemGroup>
     <None Include="License.md" />
     <None Include="ReadMe.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Interop.WIA.dll" />
-    <Content Include="PaintDotNet.Base.dll" />
-    <Content Include="PaintDotNet.Core.dll" />
-    <Content Include="PaintDotNet.Data.dll" />
-    <Content Include="PaintDotNet.Effects.dll" />
-    <Content Include="PaintDotNet.Framework.dll" />
-    <Content Include="PaintDotNet.Resources.dll" />
-    <Content Include="PaintDotNet.SystemLayer.dll" />
-    <Content Include="PaintDotNet.SystemLayer.Native.x64.dll" />
-    <Content Include="PaintDotNet.SystemLayer.Native.x86.dll" />
-    <Content Include="ShellExtension_x64.dll" />
-    <Content Include="ShellExtension_x86.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
