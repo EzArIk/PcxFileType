@@ -11,7 +11,7 @@
     <RootNamespace>PcxFileTypePlugin</RootNamespace>
     <AssemblyName>PcxFileType</AssemblyName>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -93,6 +93,20 @@
     <None Include="License.md" />
     <None Include="ReadMe.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interop.WIA.dll" />
+    <Content Include="PaintDotNet.Base.dll" />
+    <Content Include="PaintDotNet.Core.dll" />
+    <Content Include="PaintDotNet.Data.dll" />
+    <Content Include="PaintDotNet.Effects.dll" />
+    <Content Include="PaintDotNet.Framework.dll" />
+    <Content Include="PaintDotNet.Resources.dll" />
+    <Content Include="PaintDotNet.SystemLayer.dll" />
+    <Content Include="PaintDotNet.SystemLayer.Native.x64.dll" />
+    <Content Include="PaintDotNet.SystemLayer.Native.x86.dll" />
+    <Content Include="ShellExtension_x64.dll" />
+    <Content Include="ShellExtension_x86.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -102,6 +116,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) "C:\Program Files\Paint.NET\FileTypes\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

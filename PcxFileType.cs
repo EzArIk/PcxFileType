@@ -17,7 +17,9 @@
 
 // NOTE: Only supports saving 256-color RLE encoded images
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//Modified by EzArIk(Thomas C. Maylam [on (GB)11/20/2016]) to support the use of preset Pallettes.//
+////////////////////////////////////////////////////////////////////////////////////////////////////
 using PaintDotNet;
 using PaintDotNet.IO;
 using PcxFileTypePlugin.Quantize;
@@ -64,7 +66,7 @@ namespace PcxFileTypePlugin
 
         protected override SaveConfigToken OnCreateDefaultSaveConfigToken()
         {
-            return new PcxSaveConfigToken(0, false, false, 8, true);
+            return new PcxSaveConfigToken(0, false, false, 8, true, false, null, 0);
         }
 
         #endregion
@@ -705,6 +707,13 @@ namespace PcxFileTypePlugin
                         palette = palette.GetRange(0, 1 << bitsPerPixel);
                     quantizer = new PaletteQuantizer(palette);
                 }
+                else if (pcxToken.preset_palette == true && pcxToken.preset_palette_string != null)
+                {
+                    List<Color> palette = PcxPalette.Deserialize(pcxToken.preset_palette_string);
+                    if (bitsPerPixel > 0)
+                        palette = palette.GetRange(0, 1 << bitsPerPixel);
+                    quantizer = new PaletteQuantizer(palette);
+                }
                 else
                 {
                     quantizer = new OctreeQuantizer(255, 8);
@@ -845,7 +854,7 @@ namespace PcxFileTypePlugin
                 m_reader = reader;
                 m_bitsPerPixel = bitsPerPixel;
                 m_bitMask = (uint)((1 << (int)m_bitsPerPixel) - 1);
-            }       
+            }
 
             public uint ReadIndex()
             {

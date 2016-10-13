@@ -19,13 +19,16 @@ namespace PcxFileTypePlugin
             return new PcxSaveConfigToken(this);
         }
 
-        public PcxSaveConfigToken(int threshold, bool preMultiplyAlpha, bool useOriginalPalette, int ditherLevel, bool rle)
+        public PcxSaveConfigToken(int threshold, bool preMultiplyAlpha, bool useOriginalPalette, int ditherLevel, bool rle, bool preset_palette, string preset_palette_string, int preset_palette_arr_position)
         {
             this.threshold = threshold;
             this.preMultiplyAlpha = preMultiplyAlpha;
             this.useOriginalPalette = useOriginalPalette;
             this.ditherLevel = ditherLevel;
             this.rle = rle;
+            this.preset_palette = preset_palette;
+            this.preset_palette_string = preset_palette_string;
+            this.preset_palette_arr_position = preset_palette_arr_position;
             Validate();
         }
 
@@ -36,6 +39,9 @@ namespace PcxFileTypePlugin
             this.useOriginalPalette = copyMe.useOriginalPalette;
             this.ditherLevel = copyMe.ditherLevel;
             this.rle = copyMe.rle;
+            this.preset_palette = copyMe.preset_palette;
+            this.preset_palette_string = copyMe.preset_palette_string;
+            this.preset_palette_arr_position = copyMe.preset_palette_arr_position;
         }
 
         private const int minThreshold = 0;
@@ -48,6 +54,12 @@ namespace PcxFileTypePlugin
         private bool useOriginalPalette;
         private int ditherLevel;
         private bool rle;
+
+        //----New-Pal-Stuff------
+        public bool preset_palette;
+        public string/*[]*/ preset_palette_string;
+        public int preset_palette_arr_position;
+        //----New-Pal-Stuff------
 
         public int Threshold
         {
@@ -115,6 +127,20 @@ namespace PcxFileTypePlugin
                 this.rle = value;
             }
         }
+
+       /* public bool preset_palette
+        {
+            get
+            {
+                return this.preset_palette;
+            }
+
+            set
+            {
+                this.preset_palette = value;
+            }
+        }*/
+
 
         public override void Validate()
         {
