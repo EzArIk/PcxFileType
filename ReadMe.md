@@ -9,6 +9,7 @@ History
 * 2007-10-21 - 0.9.3.0 - Force 1-bit images to black/white palette
 * 2014-06-24 - 0.9.4.0 - Compatibility with Paint.NET 4.0
 * 2015-01-09 - 0.9.5.0 - Build for .NET Framework 4.5
+* 2016-10-13 - 0.9.5.1 - [EzArIk]: Added (somewhat crude but effective) pre-set palette support, included example pre-set file.
 
 Summary
 -------
@@ -62,12 +63,19 @@ The PCX format does not support transparency, but the transparency
 threshold can be used to adjust how tranparency present in the image
 is applied to the pixels before the image is flattened.
 
-One more option is present but only has an effect if the image
+Two more options are present but one only has an effect if the image
 was originally loaded as a palettized PCX image:
 
 * Use original palette
 
 If selected, the original palette will be used when saving.
+
+The second option is: 
+* Use Pre-set palette
+
+If selected, the images palette can be overridden with one of the pre-set palettes stored in Preset_Pallettes.pst_pal.txt, 
+these can be changed by editing that text file, for the current official Preset_Pallettes.pst_pal.txt look in the folder 
+named: _Preset_Palettes_Example_File (a readme in that folder describes where to place the palette file to use it.)
 
 Installation
 ------------
